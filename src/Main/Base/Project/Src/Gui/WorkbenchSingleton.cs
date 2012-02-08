@@ -165,13 +165,14 @@ namespace ICSharpCode.SharpDevelop.Gui
 		/// </summary>
 		public static R SafeThreadFunction<R>(Func<R> method)
 		{
-			// InvokeRequired test is necessary so that we don't run other actions in the message queue
-			// when we're already running on the main thread (unexpected reentrancy)
-			ISynchronizeInvoke si = workbench.SynchronizingObject;
-			if (si.InvokeRequired)
-				return (R)workbench.SynchronizingObject.Invoke(method, emptyObjectArray);
-			else
-				return method();
+			if (workbench != null) {
+				// InvokeRequired test is necessary so that we don't run other actions in the message queue
+				// when we're already running on the main thread (unexpected reentrancy)
+				ISynchronizeInvoke si = workbench.SynchronizingObject;
+				if (si.InvokeRequired)
+					return (R)workbench.SynchronizingObject.Invoke(method, emptyObjectArray);
+			}
+			return method();
 		}
 		
 		/// <summary>
@@ -181,11 +182,12 @@ namespace ICSharpCode.SharpDevelop.Gui
 		/// </summary>
 		public static R SafeThreadFunction<A, R>(Func<A, R> method, A arg1)
 		{
-			ISynchronizeInvoke si = workbench.SynchronizingObject;
-			if (si.InvokeRequired)
-				return (R)si.Invoke(method, new object[] { arg1 });
-			else
-				return method(arg1);
+			if (workbench != null) {
+				ISynchronizeInvoke si = workbench.SynchronizingObject;
+				if (si.InvokeRequired)
+					return (R)si.Invoke(method, new object[] { arg1 });
+			}
+			return method(arg1);
 		}
 		
 		/// <summary>
@@ -195,11 +197,14 @@ namespace ICSharpCode.SharpDevelop.Gui
 		/// </summary>
 		public static void SafeThreadCall(Action method)
 		{
-			ISynchronizeInvoke si = workbench.SynchronizingObject;
-			if (si.InvokeRequired)
-				si.Invoke(method, emptyObjectArray);
-			else
-				method();
+			if(workbench != null) {
+				ISynchronizeInvoke si = workbench.SynchronizingObject;
+				if (si.InvokeRequired) {
+					si.Invoke(method, emptyObjectArray);
+					return;
+				}
+			}
+			method();
 		}
 		
 		/// <summary>
@@ -209,11 +214,14 @@ namespace ICSharpCode.SharpDevelop.Gui
 		/// </summary>
 		public static void SafeThreadCall<A>(Action<A> method, A arg1)
 		{
-			ISynchronizeInvoke si = workbench.SynchronizingObject;
-			if (si.InvokeRequired)
-				si.Invoke(method, new object[] { arg1 });
-			else
-				method(arg1);
+			if (workbench != null) {
+				ISynchronizeInvoke si = workbench.SynchronizingObject;
+				if (si.InvokeRequired) {
+					si.Invoke(method, new object[] { arg1 });
+					return;
+				}
+			}
+			method(arg1);
 		}
 		
 		/// <summary>
@@ -223,11 +231,14 @@ namespace ICSharpCode.SharpDevelop.Gui
 		/// </summary>
 		public static void SafeThreadCall<A, B>(Action<A, B> method, A arg1, B arg2)
 		{
-			ISynchronizeInvoke si = workbench.SynchronizingObject;
-			if (si.InvokeRequired)
-				si.Invoke(method, new object[] { arg1, arg2 });
-			else
-				method(arg1, arg2);
+			if (workbench != null) {
+				ISynchronizeInvoke si = workbench.SynchronizingObject;
+				if (si.InvokeRequired) {
+					si.Invoke(method, new object[] { arg1, arg2 });
+					return;
+				}
+			}
+			method(arg1, arg2);
 		}
 		
 		/// <summary>
@@ -237,11 +248,14 @@ namespace ICSharpCode.SharpDevelop.Gui
 		/// </summary>
 		public static void SafeThreadCall<A, B, C>(Action<A, B, C> method, A arg1, B arg2, C arg3)
 		{
-			ISynchronizeInvoke si = workbench.SynchronizingObject;
-			if (si.InvokeRequired)
-				si.Invoke(method, new object[] { arg1, arg2, arg3 });
-			else
-				method(arg1, arg2, arg3);
+			if (workbench != null) {
+				ISynchronizeInvoke si = workbench.SynchronizingObject;
+				if (si.InvokeRequired) {
+					si.Invoke(method, new object[] { arg1, arg2, arg3 });
+					return;
+				}
+			}
+			method(arg1, arg2, arg3);
 		}
 		
 		/// <summary>

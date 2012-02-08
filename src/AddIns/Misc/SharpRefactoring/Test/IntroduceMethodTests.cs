@@ -3,6 +3,8 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
+using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Dom.CSharp;
@@ -15,7 +17,6 @@ using Ast = ICSharpCode.NRefactory.Ast;
 namespace SharpRefactoring.Tests
 {
 	[TestFixture]
-	[Ignore]
 	public class IntroduceMethodTests
 	{
 		string simpleStart = @"
@@ -51,6 +52,16 @@ interface ITest {
 		[STAThread]
 		public void SetupTests()
 		{
+			var addIns = new []{
+				@"..\..\AddIns\ICSharpCode.SharpDevelop.addin",
+				@"..\..\AddIns\BackendBindings\CSharpBinding\CSharpBinding.addin",
+			};
+			AddInTree.Load(addIns.ToList(),
+			               new System.Collections.Generic.List<string>());
+			
+			var parserDescriptions = AddInTree.BuildItems<ParserDescriptor>("/Workspace/Parser", null, false);
+			ParserService.RegisterAvailableParsers(parserDescriptions.ToArray());
+
 			editor = new MockTextEditor();
 		}
 		

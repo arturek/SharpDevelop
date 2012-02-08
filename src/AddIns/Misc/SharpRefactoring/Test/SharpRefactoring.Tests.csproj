@@ -97,7 +97,7 @@
     <ProjectReference Include="..\..\..\BackendBindings\CSharpBinding\Project\CSharpBinding.csproj">
       <Project>{1F1AC7CD-D154-45BB-8EAF-804CA8055F5A}</Project>
       <Name>CSharpBinding</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\Project\SharpRefactoring.csproj">
       <Project>{3CA90546-3B4C-4663-9445-C4E9371750A7}</Project>
